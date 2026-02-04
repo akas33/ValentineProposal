@@ -5,59 +5,49 @@ import Asking from "./components/Asking";
 import flowerBear from "./flowerBear.gif";
 import madBear from "./madBear.gif";
 
-/**
- * Main App component managing the Valentine's Day proposal.
- *
- * @returns {JSX.Element} JSX element representing the App component.
- */
 const App = () => {
-  // State to track acceptance and rejection
   const [accepted, setAccepted] = useState(false);
   const [rejected, setRejected] = useState(false);
   const [noButtonText, setNoButtonText] = useState("No");
-  const [lastRejectedIndex, setLastRejectedIndex] = useState(-1);
+  const [yesButtonSize, setYesButtonSize] = useState(1);
 
-  // Handler for accepting the proposal
   const handleAccept = () => {
     setAccepted(true);
   };
 
-  // Handler for rejecting the proposal
   const handleReject = () => {
     setRejected(true);
-    // Array of rejection messages
+    setYesButtonSize(yesButtonSize + 0.4); // Button grows faster
+    
     const rejectionTexts = [
-      "Are you sure?",
-      "Maybe try again?",
-      "Think again!",
-      "Loser :(",
+      "Are you sure, Bebe? 🥺",
+      "But it's been since 2021! 😲",
+      "Don't do this to me, Bro... 💔",
+      "Think of the memories! ✨",
+      "Bebe, please?? ⭐",
+      "Wrong button, try the green one! 😂",
+      "I'm gonna tell your mom! 🏃‍♂️",
     ];
-    // Randomly select a rejection message
-    let randomIndex;
-    do {
-      randomIndex = Math.floor(Math.random() * rejectionTexts.length);
-    } while (randomIndex === lastRejectedIndex);
 
-    setLastRejectedIndex(randomIndex);
+    const randomIndex = Math.floor(Math.random() * rejectionTexts.length);
     setNoButtonText(rejectionTexts[randomIndex]);
   };
 
   return (
     <div className="App">
       <div className="App-body">
-        {/* Asking to be my Valentine */}
-        {!accepted && (
+        {!accepted ? (
           <Asking
             gif={rejected ? madBear : flowerBear}
-            altText={rejected ? "Rejected Bear" : "I love you Bear"}
+            altText="Cute Bears"
             handleAccept={handleAccept}
             handleReject={handleReject}
             noButtonText={noButtonText}
+            yesButtonSize={yesButtonSize}
           />
+        ) : (
+          <Success />
         )}
-
-        {/* She said YES! */}
-        {accepted && <Success />}
       </div>
     </div>
   );
